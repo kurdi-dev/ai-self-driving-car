@@ -68,6 +68,7 @@ class Car {
                     this.width,
                     this.height
                     );
+        ctx.fillStyle = "blue";
         ctx.fill();
 
         ctx.restore();
