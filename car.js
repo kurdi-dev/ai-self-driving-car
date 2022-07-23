@@ -60,8 +60,6 @@ class Car {
         ctx.rotate(-this.angle)
 
         ctx.beginPath();
-        if(this.y < 50){this.y = 50};
-        if(this.y < 50){this.y = 50};
         
         ctx.rect(   -this.width/2, 
                     -this.height/2,
