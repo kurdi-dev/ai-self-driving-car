@@ -1,37 +1,57 @@
 class Car {
 
-    constructor(x, y, width, height){
+    constructor(x, y, width, height, carType){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.carType = carType;
 
-        this.speed = 0;
-        this.acceleration = 0.4;
-        this.maxSpeed = 3;
-        this.friction= 0.05;
+        switch(carType){
+            case "MAIN":
+                this.speed = 0;
+                this.acceleration = 0.4;
+                this.maxSpeed = 3;
+                this.friction= 0.05;
+                break;
+            case "DUMMY":
+                this.speed = 0;
+                this.acceleration = 0.4;
+                this.maxSpeed = 2;
+                this.friction= 0.05;
+                break;
+        }
 
+
+        
         this.angle = 0;
         this.damaged=false;
 
+        if(carType === "MAIN"){
         this.sensor = new Sensor(this)
-        this.controls = new Controls();
+        }
+        this.controls = new Controls(carType);
         
     }
 
-    update(roadBorders){
+    update(roadBorders, traffic){
         if(!this.damaged){
             this.#movment();
             this.polygon=this.#createPolygon();
-            this.damaged=this.#assessDamage(roadBorders) 
+            this.damaged=this.#assessDamage(roadBorders, traffic) 
         }
-        this.sensor.update(roadBorders);
+        this.sensor && this.sensor.update(roadBorders, traffic);
         console.log(this.damaged);
     }
 
-    #assessDamage(roadBorders){
+    #assessDamage(roadBorders, traffic){
         for(let i=0;i<roadBorders.length;i++){
             if(polysIntersect(this.polygon,roadBorders[i])){
+                return true;
+            }
+        }
+        for(let i=0;i<traffic.length;i++){
+            if(polysIntersect(this.polygon,traffic[i].polygon)){
                 return true;
             }
         }
@@ -90,32 +110,18 @@ class Car {
     }
     
     draw(ctx){
-        if(this.damaged){ctx.fillStyle = "gray"}else{ctx.fillStyle = "green";}
+        
+        if(this.carType == "MAIN"){
+            if(this.damaged){ctx.fillStyle = "gray"}else{ctx.fillStyle = "green";}
+        }else{
+            ctx.fillStyle = "blue"
+        }
         ctx.beginPath();
         ctx.moveTo(this.polygon[0].x,this.polygon[0].y)
         for(let i =1;i< this.polygon.length;i++){
             ctx.lineTo(this.polygon[i].x,this.polygon[i].y)
         }
         ctx.fill();
-        this.sensor.draw(ctx);
+        this.sensor && this.sensor.draw(ctx);
     }
-    // draw(ctx){
-    //     ctx.save();
-    //     ctx.translate(this.x, this.y);
-    //     ctx.rotate(-this.angle)
-
-    //     ctx.beginPath();
-        
-    //     ctx.rect(   -this.width/2, 
-    //                 -this.height/2,
-    //                 this.width,
-    //                 this.height
-    //                 );
-    //     ctx.fillStyle = "blue";
-    //     ctx.fill();
-
-    //     ctx.restore();
-
-    //     this.sensor.draw(ctx);
-    // }
 }
