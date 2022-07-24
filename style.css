@@ -4,6 +4,9 @@ body{
     overflow: hidden;
     text-align: center;
 }
-#myCanvas{
+#carCanvas{
     background: #1e1e1e;
+}
+#networkCanvas{
+    background: black;
 }
