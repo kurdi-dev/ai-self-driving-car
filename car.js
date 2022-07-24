@@ -53,7 +53,6 @@ class Car {
             this.sensor.update(roadBorders, traffic);
             const offsets = this.sensor.readings.map(s=>s==null?0:1-s.offset)
             const outputs = NeuralNetwork.feedForward(offsets,this.brain);
-            console.log(outputs);
 
             if(this.useBrain){
                 this.controls.forward=outputs[0];
@@ -129,7 +128,7 @@ class Car {
 
     }
     
-    draw(ctx){
+    draw(ctx, drawSensor=false){
         
         if(this.carType != "DUMMY"){
             if(this.damaged){ctx.fillStyle = "gray"}else{ctx.fillStyle = "green";}
@@ -142,6 +141,6 @@ class Car {
             ctx.lineTo(this.polygon[i].x,this.polygon[i].y)
         }
         ctx.fill();
-        this.sensor && this.sensor.draw(ctx);
+        if(this.sensor && drawSensor){this.sensor.draw(ctx);}
     }
 }
