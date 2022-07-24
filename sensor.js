@@ -18,7 +18,6 @@ class Sensor{
                 this.#getReading(this.rays[i],roadBorders, traffic)
             )
         }
-        console.table(this.readings);
     }
 
     #getReading(ray, roadBorders, traffic){

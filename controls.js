@@ -7,7 +7,7 @@ class Controls {
         this.reverse=false;
 
         switch(carType){
-            case "MAIN":
+            case "AI":
                 this.#addKeyboardListeners();
                 break;
             case "DUMMY":
